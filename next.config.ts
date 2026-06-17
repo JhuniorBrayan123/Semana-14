@@ -8,6 +8,16 @@ const nextConfig: NextConfig = {
         destination: "/api/sitemap",
         permanent: true,
       },
+      {
+        source: "/api/sitemap.xml",
+        destination: "/api/sitemap",
+        permanent: true,
+      },
+      {
+        source: "/api/sitemap.js",
+        destination: "/api/sitemap",
+        permanent: true,
+      },
     ];
   },
 };

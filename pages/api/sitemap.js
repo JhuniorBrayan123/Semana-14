@@ -1,7 +1,7 @@
 import { routes } from "../../data/routes";
 
 // URL base (puedes cambiarla por tu dominio final en Render o Vercel)
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "https://mi-proyecto-seo.onrender.com";
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "https://semana-14-r5u6.onrender.com";
 
 async function buildSitemap() {
   // 1. Rutas estáticas

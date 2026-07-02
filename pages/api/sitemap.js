@@ -1,9 +1,26 @@
 import { routes } from "../../data/routes";
 
-const BASE_URL = "https://mi-proyecto-seo-snowy.vercel.app";
+// URL base (puedes cambiarla por tu dominio final en Render o Vercel)
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "https://mi-proyecto-seo.onrender.com";
 
-function buildSitemap() {
-  const urls = routes
+async function buildSitemap() {
+  // 1. Rutas estáticas
+  let allRoutes = [...routes];
+
+  // 2. Simulación de CMS/Base de datos (API externa)
+  try {
+    const res = await fetch("https://jsonplaceholder.typicode.com/posts?_limit=5");
+    const posts = await res.json();
+    
+    // Generar rutas dinámicas para el blog a partir de la API
+    const dynamicRoutes = posts.map(post => `/blog/${post.id}`);
+    allRoutes = [...allRoutes, ...dynamicRoutes];
+  } catch (error) {
+    console.error("Error fetching dynamic routes for sitemap:", error);
+  }
+
+  // 3. Construir el XML
+  const urls = allRoutes
     .map(
       (url) => `  <url>
     <loc>${BASE_URL}${url}</loc>
@@ -17,9 +34,11 @@ ${urls}
 </urlset>`;
 }
 
-export default function handler(req, res) {
+export default async function handler(req, res) {
   res.status(200);
   res.setHeader("Content-Type", "application/xml; charset=utf-8");
   res.setHeader("Cache-Control", "public, s-maxage=3600, stale-while-revalidate=86400");
-  res.send(buildSitemap());
+  
+  const sitemap = await buildSitemap();
+  res.send(sitemap);
 }

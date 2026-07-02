@@ -19,11 +19,15 @@ async function buildSitemap() {
     console.error("Error fetching dynamic routes for sitemap:", error);
   }
 
-  // 3. Construir el XML
+  // 3. Obtener la fecha actual para el timestamp (en formato ISO)
+  const currentDate = new Date().toISOString();
+
+  // 4. Construir el XML
   const urls = allRoutes
     .map(
       (url) => `  <url>
     <loc>${BASE_URL}${url}</loc>
+    <lastmod>${currentDate}</lastmod>
   </url>`
     )
     .join("\n");
